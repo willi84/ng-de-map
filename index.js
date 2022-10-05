@@ -13,21 +13,36 @@ buttonShows.forEach(element => {
         }
     });
 });
+const showSelection = (elements, area) => {
+    area.classList.add('clicked');
+    elements.forEach(element => {
+        element.classList.add('not-active')
+    });
+    const id = area.getAttribute('id').replace('_AREA', '')
+    const shownElements = document.querySelectorAll(`#MAP > [id^=ROOM_] [id^=AREA_${id}], #MAP > [id^=ROOM_] [id^=AREA_${id}] *`);
+    shownElements.forEach(element => {
+        element.classList.remove('not-active')
+    });
+};
+const hideSelection = (elements, area) => {
+    area.classList.remove('clicked');
+    elements.forEach(element => {
+        element.classList.remove('not-active')
+    });
+};
 areas.forEach(area => {
     const elements = document.querySelectorAll('#MAP > [id^=ROOM_] [id^=AREA_]'); //.classList.add('not-active')
     area.addEventListener('mouseout', function(){
-        elements.forEach(element => {
-            element.classList.remove('not-active')
-        });
+        hideSelection(elements, area);
     });
     area.addEventListener('mouseover', function(){
-        elements.forEach(element => {
-            element.classList.add('not-active')
-        });
-        const id = area.getAttribute('id').replace('_AREA', '')
-        const shownElements = document.querySelectorAll(`#MAP > [id^=ROOM_] [id^=AREA_${id}], #MAP > [id^=ROOM_] [id^=AREA_${id}] *`);
-        shownElements.forEach(element => {
-            element.classList.remove('not-active')
-        });
+        showSelection(elements, area);
+    });
+    area.addEventListener('click', function(){
+        if(area.classList.contains('clicked')){
+            hideSelection(elements, area);
+        } else {
+            showSelection(elements, area);
+        }
     });
 });
