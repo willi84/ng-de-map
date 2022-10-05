@@ -1,6 +1,6 @@
 console.log('foo')
 const buttonShows = document.querySelectorAll('.showORHide');
-console.log(buttonShows);
+const areas = document.querySelectorAll('#LEGEND [id$=_AREA]');
 buttonShows.forEach(element => {
     element.addEventListener('click', function(){
         const target = document.querySelector('#' + element.getAttribute('data-room'));
@@ -12,6 +12,22 @@ buttonShows.forEach(element => {
             element.classList.remove('not-active');
         }
     });
-
-    console.log(element);
+});
+areas.forEach(area => {
+    const elements = document.querySelectorAll('#MAP > [id^=ROOM_] [id^=AREA_]'); //.classList.add('not-active')
+    area.addEventListener('mouseout', function(){
+        elements.forEach(element => {
+            element.classList.remove('not-active')
+        });
+    });
+    area.addEventListener('mouseover', function(){
+        elements.forEach(element => {
+            element.classList.add('not-active')
+        });
+        const id = area.getAttribute('id').replace('_AREA', '')
+        const shownElements = document.querySelectorAll(`#MAP > [id^=ROOM_] [id^=AREA_${id}], #MAP > [id^=ROOM_] [id^=AREA_${id}] *`);
+        shownElements.forEach(element => {
+            element.classList.remove('not-active')
+        });
+    });
 });
